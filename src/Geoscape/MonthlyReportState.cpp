@@ -109,6 +109,24 @@ MonthlyReportState::MonthlyReportState(Globe *globe) : _gameOver(0), _ratingTota
 	_txtFailure->setText(tr("STR_YOU_HAVE_FAILED"));
 	_txtFailure->setVisible(false);
 
+	// Osobist 15/01/2025 addition start, hiding balance and buttons behind research
+
+ 	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_txtRating->setVisible(false);
+			_txtIncome->setVisible(false);
+			_txtMaintenance->setVisible(false);
+			_txtBalance->setVisible(false);
+			_txtBonus->setVisible(false);
+			_txtDesc->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 	calculateChanges();
 
 	int month = _game->getSavedGame()->getTime()->getMonth() - 1, year = _game->getSavedGame()->getTime()->getYear();
@@ -396,7 +414,7 @@ void MonthlyReportState::btnOkClick(Action *)
 			_btnOk->setVisible(false);
 			_btnBigOk->setVisible(true);
 			_txtFailure->setVisible(true);
-			_game->getMod()->playMusic("GMLOSE");
+			// _game->getMod()->playMusic("GMLOSE"); // Osobist 15/01/2025 addition, Removed gameover music from MonthlyReportState to avoid double playback 
 		}
 	}
 }

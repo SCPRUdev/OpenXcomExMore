@@ -180,6 +180,20 @@ void SellState::delayedInit()
 
 	_cats.push_back("STR_ALL_ITEMS");
 
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_txtFunds->setVisible(false);
+			_btnOk->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 	for (auto* soldier : *_base->getSoldiers())
 	{
 		if (_debriefingState) break;
@@ -252,6 +266,14 @@ void SellState::delayedInit()
 		{
 			qty = _debriefingState->getRecoveredItemCount(rule);
 		}
+
+		// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+		else if (!rule->getCanBeSoldNormally())
+		{
+			qty = 0;
+		}
+		// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
+
 		else
 		{
 			qty = _base->getStorageItems()->getItem(rule);

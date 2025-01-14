@@ -362,7 +362,21 @@ void DebriefingState::applyVisibility()
 	_lstRecoveredItems->setVisible(showItems);
 
 	// Set text on toggle button accordingly
-	_btnSell->setVisible(showItems && _showSellButton);
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+	//	_btnSell->setVisible(showItems && _showSellButton);
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true && showItems && _showSellButton);
+		if (!newBasesUnlocked)
+		{
+			_btnSell->setVisible(false);
+			_btnTransfer->setVisible(false);
+		}
+	}
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 	_btnTransfer->setVisible(showItems && _showSellButton && _game->getSavedGame()->getBases()->size() > 1);
 	if (showScore)
 	{

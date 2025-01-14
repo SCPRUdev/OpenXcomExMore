@@ -175,6 +175,19 @@ PurchaseState::PurchaseState(Base *base, CannotReequipState *parent) : _base(bas
 		_cats.push_back("STR_FILTER_MISSING");
 	}
 
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_txtFunds->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 	RuleBaseFacilityFunctions providedBaseFunc = _base->getProvidedBaseFunc({});
 
 	// setup the filter methods to be used in various situations (craft, soldiers, items).

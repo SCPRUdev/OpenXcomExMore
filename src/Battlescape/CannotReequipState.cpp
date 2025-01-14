@@ -95,6 +95,21 @@ CannotReequipState::CannotReequipState(std::vector<ReequipStat> &missingItems, B
 	_lstItems->setSelectable(true);
 	_lstItems->setBackground(_window);
 	_lstItems->setMargin(2);
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_btnManufacture->setVisible(false);
+			_btnPurchase->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 }
 
 /**

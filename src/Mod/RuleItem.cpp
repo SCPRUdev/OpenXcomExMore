@@ -169,6 +169,9 @@ RuleItem::RuleItem(const std::string &type, int listOrder) :
 	_recoveryPoints(0), _armor(20), _turretType(-1),
 	_aiUseDelay(-1), _aiMeleeHitCount(25),
 	_recover(true), _recoverCorpse(true), _ignoreInBaseDefense(false), _ignoreInCraftEquip(true), _liveAlien(false),
+	// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+    _canBeSoldNormally(true), _canBeTransferredNormally(true),
+	// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
 	_liveAlienPrisonType(0), _attraction(0), _flatUse(0, 1), _flatThrow(0, 1), _flatPrime(0, 1), _flatUnprime(0, 1), _arcingShot(false),
 	_experienceTrainingMode(ETM_DEFAULT), _manaExperience(0), _listOrder(listOrder),
 	_maxRange(200), _minRange(0), _dropoff(2), _bulletSpeed(0), _explosionSpeed(0), _shotgunPellets(0), _shotgunBehaviorType(0), _shotgunSpread(100), _shotgunChoke(100),
@@ -600,6 +603,10 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	reader.tryRead("ignoreInCraftEquip", _ignoreInCraftEquip);
 	reader.tryRead("liveAlien", _liveAlien);
 	reader.tryRead("prisonType", _liveAlienPrisonType);
+	// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+	reader.tryRead("canBeSoldNormally", _canBeSoldNormally);
+	reader.tryRead("canBeTransferredNormally", _canBeTransferredNormally);
+	// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
 	reader.tryRead("attraction", _attraction);
 	reader.tryRead("arcingShot", _arcingShot);
 	reader.tryRead("experienceTrainingMode", _experienceTrainingMode);
@@ -2140,6 +2147,28 @@ bool RuleItem::isAlien() const
 {
 	return _liveAlien;
 }
+// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+
+/**
+ * Returns if this if this item can be sold via sell/sack menu.
+ * @return True if this item can be sold via sell/sack menu.
+ */
+
+bool RuleItem::getCanBeSoldNormally() const
+{
+	return _canBeSoldNormally;
+}
+
+/**
+ * Returns if this if this item can be transferred via transfer menu.
+ * @return True if this item can be transferred via transfer menu.
+ */
+bool RuleItem::getCanBeTransferredNormally() const
+{
+	return _canBeTransferredNormally;
+}
+
+// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
 
 /**
 * Returns to which type of prison does the live alien belong.
@@ -2848,13 +2877,20 @@ void RuleItem::ScriptRegister(ScriptParserBase* parser)
 
 		rs.add<&getDamageToScript<&RuleDamageType::ToArmorPre>>("getDamageToArmorPre", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToArmor>>("getDamageToArmor", "calculated damage value multiplied by the corresponding modifier");
+		// Osobist 15/01/2025 addition start, new ToXXXPre atributes
+		rs.add<&getDamageToScript<&RuleDamageType::ToEnergyPre> >("getDamageToTime", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToEnergy>>("getDamageToEnergy", "calculated damage value multiplied by the corresponding modifier");
+		rs.add<&getDamageToScript<&RuleDamageType::ToHealthPre> >("getDamageToHealthPre", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToHealth>>("getDamageToHealth", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToItem>>("getDamageToItem", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToMana>>("getDamageToMana", "calculated damage value multiplied by the corresponding modifier");
+		rs.add<&getDamageToScript<&RuleDamageType::ToMoralePre> >("getDamageToMoralePre", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToMorale>>("getDamageToMorale", "calculated damage value multiplied by the corresponding modifier");
+		rs.add<&getDamageToScript<&RuleDamageType::ToStunPre> >("getDamageToStunPre", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToStun>>("getDamageToStun", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToTile>>("getDamageToTile", "calculated damage value multiplied by the corresponding modifier");
+		rs.add<&getDamageToScript<&RuleDamageType::ToTimePre> >("getDamageToTime", "calculated damage value multiplied by the corresponding modifier");
+		// Osobist 15/01/2025 addition end, new ToXXXPre atributes
 		rs.add<&getDamageToScript<&RuleDamageType::ToTime>>("getDamageToTime", "calculated damage value multiplied by the corresponding modifier");
 		rs.add<&getDamageToScript<&RuleDamageType::ToWound>>("getDamageToWound", "calculated damage value multiplied by the corresponding modifier");
 

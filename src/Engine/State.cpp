@@ -603,6 +603,12 @@ void State::setStandardPalette(const std::string &palette, int backpals)
 	{
 		_cursorColor = Mod::GRAPHS_CURSOR;
 	}
+	// Osobist 14/01/2025 addition start, tied cursor color in main menu to its corresponding pallete
+	else if (palette == "PAL_MENU_SCREENS")
+	{
+		_cursorColor = Mod::GRAPHS_CURSOR;
+	}
+	// Osobist 14/01/2025 addition end, tied cursor color in main menu to its corresponding pallete
 	else
 	{
 		_cursorColor = Mod::BATTLESCAPE_CURSOR;

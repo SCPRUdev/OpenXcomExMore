@@ -112,6 +112,19 @@ GlobalManufactureState::GlobalManufactureState(bool openedFromBasescape) : _open
 	_lstManufacture->setWordWrap(true);
 	_lstManufacture->onMouseClick((ActionHandler)&GlobalManufactureState::onSelectBase, SDL_BUTTON_LEFT);
 	_lstManufacture->onMouseClick((ActionHandler)&GlobalManufactureState::onOpenTechTreeViewer, SDL_BUTTON_MIDDLE);
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_txtFunds->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 }
 
 /**

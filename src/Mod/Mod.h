@@ -270,6 +270,9 @@ private:
 	std::pair<std::string, int> _alienFuel;
 	RuleResearch* _finalResearch = nullptr;
 	std::string _fontName, _psiUnlockResearch, _fakeUnderwaterBaseUnlockResearch, _newBaseUnlockResearch;
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+	std::string	_purchaseUnlockResearch, _sellUnlockResearch;
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 	std::string _hireScientistsUnlockResearch, _hireEngineersUnlockResearch;
 	RuleBaseFacilityFunctions _hireScientistsRequiresBaseFunc, _hireEngineersRequiresBaseFunc;
 
@@ -952,6 +955,13 @@ public:
 	const std::string &getFakeUnderwaterBaseUnlockResearch() const { return _fakeUnderwaterBaseUnlockResearch; }
 	/// Gets the research topic required for building XCOM bases.
 	const std::string &getNewBaseUnlockResearch() const { return _newBaseUnlockResearch; }
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+	/// Gets the research topic required for purchasing/hiring personnel and items.
+	const std::string &getPurchaseUnlockResearch() const { return _purchaseUnlockResearch; }
+	/// Gets the research topic required for selling/sacking personnel and items.
+	const std::string &getSellUnlockResearch() const { return _sellUnlockResearch; }
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 
 	/// Gets the threshold for defining a glancing hit on a ufo during interception
 	int getUfoGlancingHitThreshold() const { return _ufoGlancingHitThreshold; }

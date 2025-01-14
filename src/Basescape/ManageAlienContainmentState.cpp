@@ -53,7 +53,7 @@ namespace OpenXcom
  * @param base Pointer to the base to get info from.
  * @param origin Game section that originated this state.
  */
-ManageAlienContainmentState::ManageAlienContainmentState(Base *base, int prisonType, OptionsOrigin origin) :
+ManageAlienContainmentState::ManageAlienContainmentState(Base* base, int prisonType, OptionsOrigin origin) :
 	_base(base), _prisonType(prisonType), _origin(origin), _sel(0), _aliensSold(0), _total(0), _doNotReset(false), _threeButtons(false)
 {
 	_threeButtons = Options::canSellLiveAliens && Options::retainCorpses;
@@ -79,8 +79,8 @@ ManageAlienContainmentState::ManageAlienContainmentState(Base *base, int prisonT
 		_btnCleanup = new TextButton(148, 16, 8, 176);
 	}
 	_txtTitle = new Text(310, 17, 5, 8);
-	_txtAvailable =  new Text(190, 9, 10, 24);
-	_txtValueOfSales =  new Text(190, 9, 10, 32);
+	_txtAvailable = new Text(190, 9, 10, 24);
+	_txtValueOfSales = new Text(190, 9, 10, 32);
 	_txtUsed = new Text(110, 9, 136, 24);
 	_txtItem = new Text(120, 9, 10, 41);
 	_txtLiveAliens = new Text(54, 18, 153, 32);
@@ -169,6 +169,20 @@ ManageAlienContainmentState::ManageAlienContainmentState(Base *base, int prisonT
 	_timerInc->onTimer((StateHandler)&ManageAlienContainmentState::increase);
 	_timerDec = new Timer(250);
 	_timerDec->onTimer((StateHandler)&ManageAlienContainmentState::decrease);
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+
+	if (!_game->getMod()->getNewBaseUnlockResearch().empty())
+	{
+		bool newBasesUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getNewBaseUnlockResearch(), true);
+		if (!newBasesUnlocked)
+		{
+			_btnSell->setVisible(false);
+			_btnTransfer->setVisible(false);
+		}
+	}
+
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 }
 
 /**

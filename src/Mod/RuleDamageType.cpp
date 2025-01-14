@@ -31,9 +31,11 @@ RuleDamageType::RuleDamageType() :
 	FixRadius(0), RandomType(DRT_STANDARD), ResistType(DT_NONE), FireBlastCalc(false),
 	IgnoreDirection(false), IgnoreSelfDestruct(false), IgnorePainImmunity(false), IgnoreNormalMoraleLose(false), IgnoreOverKill(false),
 	ArmorEffectiveness(1.0f), RadiusEffectiveness(0.0f), RadiusReduction(10.0f),
-	FireThreshold(1000), SmokeThreshold(1000),
-	ToHealth(1.0f), ToMana(0.0f), ToArmor(0.1f), ToArmorPre(0.0f), ToWound(1.0f), ToItem(0.0f), ToTile(0.5f), ToStun(0.25f), ToEnergy(0.0f), ToTime(0.0f), ToMorale(0.0f),
-	RandomHealth(false), RandomMana(false), RandomArmor(false), RandomArmorPre(false), RandomWound(true), RandomItem(false), RandomTile(false), RandomStun(true), RandomEnergy(false), RandomTime(false), RandomMorale(false),
+	FireThreshold(2000), SmokeThreshold(1000),
+	// Osobist 15/01/2025 addition start, new ToXXXPre atributes
+	ToHealthPre(0.0f), ToHealth(1.0f), ToMana(0.0f), ToArmor(0.1f), ToArmorPre(0.0f), ToWound(1.0f), ToItem(0.0f), ToTile(0.5f), ToStunPre(0.0f), ToStun(0.25f), ToEnergyPre(0.0f), ToEnergy(0.0f), ToTimePre(0.0f), ToTime(0.0f), ToMoralePre(0.0f), ToMorale(0.0f),
+	RandomHealthPre(false), RandomHealth(false), RandomMana(false), RandomArmor(false), RandomArmorPre(false), RandomWound(true), RandomItem(false), RandomTile(false), RandomStunPre(false), RandomStun(true), RandomEnergyPre(false), RandomEnergy(false), RandomTimePre(false), RandomTime(false), RandomMoralePre(false), RandomMorale(false),
+	// Osobist 15/01/2025 addition end, new ToXXXPre atributes
 	TileDamageMethod(1)
 {
 
@@ -95,6 +97,26 @@ int RuleDamageType::getRandomDamage(int power, FuncRef<int(int, int)> randFunc) 
 
 		return randFunc(min, max);
 	}
+	// Osobist 14/01/2025 addition start, new randomTypes:
+	else if (randType == DRT_SCP)
+	{
+		int dmgRng = 100;
+		int min = power * (100 - dmgRng) / 100 + 25; // 25%
+		int max = power * (25 + dmgRng) / 100;       // 125%
+
+		return randFunc(min, max);
+	}
+
+	else if (randType == DRT_SCP_LIGHT)
+	{
+		int dmgRng = 100;
+		int min = power * (100 - dmgRng) / 100 + 10; // 10%
+		int max = power * (25 + dmgRng) / 100;       // 125%
+
+		return randFunc(min, max);
+	}
+	// Osobist 14/01/2025 addition end, new randomTypes:
+
 
 	const bool def = randType == DRT_DEFAULT;
 	if (def)
@@ -173,6 +195,8 @@ void RuleDamageType::load(const YAML::YamlNodeReader& node)
 	reader.tryRead("FireThreshold", FireThreshold);
 	reader.tryRead("SmokeThreshold", SmokeThreshold);
 
+	// Osobist 15/01/2025 addition start, new ToXXXPre atributes
+	reader.tryRead("ToHealthPre", ToHealthPre);
 	reader.tryRead("ToHealth", ToHealth);
 	reader.tryRead("ToMana", ToMana);
 	reader.tryRead("ToArmor", ToArmor);
@@ -180,11 +204,16 @@ void RuleDamageType::load(const YAML::YamlNodeReader& node)
 	reader.tryRead("ToWound", ToWound);
 	reader.tryRead("ToItem", ToItem);
 	reader.tryRead("ToTile", ToTile);
+	reader.tryRead("ToStunPre", ToStunPre);
 	reader.tryRead("ToStun", ToStun);
+	reader.tryRead("ToEnergyPre", ToEnergyPre);
 	reader.tryRead("ToEnergy", ToEnergy);
+	reader.tryRead("ToTimePre", ToTimePre);
 	reader.tryRead("ToTime", ToTime);
+	reader.tryRead("ToMoralePre", ToMoralePre);
 	reader.tryRead("ToMorale", ToMorale);
 
+	reader.tryRead("RandomHealthPre", RandomHealthPre);
 	reader.tryRead("RandomHealth", RandomHealth);
 	reader.tryRead("RandomMana", RandomMana);
 	reader.tryRead("RandomArmor", RandomArmor);
@@ -192,10 +221,15 @@ void RuleDamageType::load(const YAML::YamlNodeReader& node)
 	reader.tryRead("RandomWound", RandomWound);
 	reader.tryRead("RandomItem", RandomItem);
 	reader.tryRead("RandomTile", RandomTile);
+	reader.tryRead("RandomStunPre", RandomStunPre);
 	reader.tryRead("RandomStun", RandomStun);
+	reader.tryRead("RandomEnergyPre", RandomEnergyPre);
 	reader.tryRead("RandomEnergy", RandomEnergy);
+	reader.tryRead("RandomTimePre", RandomTimePre);
 	reader.tryRead("RandomTime", RandomTime);
-	reader.tryRead("RandomMorale", RandomMorale);
+	reader.tryRead("RandomMoralePre", RandomMorale);
+	reader.tryRead("RandomMorale", RandomMoralePre);
+	// Osobist 15/01/2025 addition end, new ToXXXPre atributes
 
 	reader.tryRead("TileDamageMethod", TileDamageMethod);
 }
@@ -226,6 +260,15 @@ int getDamageHelper(bool random, float multipler, int damage)
 }
 
 }
+// Osobist 15/01/2025 addition start, new ToXXXPre atributes
+/**
+ * Get final damage value to health based on damage before armor reduction.
+ */
+int RuleDamageType::getHealthPreFinalDamage(int damage) const
+{
+	return getDamageHelper(RandomHealthPre, ToHealthPre, damage);
+}
+
 
 /**
  * Get final damage value to health based on damage.
@@ -298,11 +341,27 @@ int RuleDamageType::getTileFinalDamage(int damage) const
 }
 
 /**
+ * Get final stun level change based on damage before armor reduction.
+ */
+int RuleDamageType::getStunPreFinalDamage(int damage) const
+{
+	return getDamageHelper(RandomStunPre, ToStunPre, damage);
+}
+
+/**
  * Get stun level change based on damage.
  */
 int RuleDamageType::getStunFinalDamage(int damage) const
 {
 	return getDamageHelper(RandomStun, ToStun, damage);
+}
+
+/**
+ * Get energy change based on damage before armor reduction.
+ */
+int RuleDamageType::getEnergyPreFinalDamage(int damage) const
+{
+	return getDamageHelper(RandomEnergyPre, ToEnergyPre, damage);
 }
 
 /**
@@ -314,6 +373,15 @@ int RuleDamageType::getEnergyFinalDamage(int damage) const
 }
 
 /**
+ * Get time units change based on damage before armor reduction.
+ */
+int RuleDamageType::getTimePreFinalDamage(int damage) const
+{
+	return getDamageHelper(RandomTimePre, ToTimePre, damage);
+}
+
+
+/**
  * Get time units change based on damage.
  */
 int RuleDamageType::getTimeFinalDamage(int damage) const
@@ -321,6 +389,14 @@ int RuleDamageType::getTimeFinalDamage(int damage) const
 	return getDamageHelper(RandomTime, ToTime, damage);
 }
 
+/**
+ * Get morale change based on damage before armor reduction.
+ */
+int RuleDamageType::getMoralePreFinalDamage(int damage) const
+{
+	return getDamageHelper(RandomMoralePre, ToMoralePre, damage);
+}
+// Osobist 15/01/2025 addition end, new ToXXXPre atributes
 /**
  * Get morale change based on damage.
  */

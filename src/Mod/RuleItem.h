@@ -361,6 +361,9 @@ private:
 	int _turretType;
 	int _aiUseDelay, _aiMeleeHitCount;
 	bool _recover, _recoverCorpse, _ignoreInBaseDefense, _ignoreInCraftEquip, _liveAlien;
+	// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+	bool _canBeSoldNormally, _canBeTransferredNormally;
+	// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
 	int _liveAlienPrisonType;
 	int _attraction;
 	RuleItemUseCost _flatUse, _flatThrow, _flatPrime, _flatUnprime;
@@ -814,6 +817,14 @@ public:
 	bool isAlien() const;
 	/// Returns to which type of prison does the live alien belong.
 	int getPrisonType() const;
+
+	// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+	/// Checks if this item can be sold via sell/sack menu.
+	bool getCanBeSoldNormally() const;
+	/// Checks if this item can be transferred via transfer menu.
+	bool getCanBeTransferredNormally() const;
+
+	// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
 
 	/// Should this weapon arc?
 	bool getArcingShot() const;

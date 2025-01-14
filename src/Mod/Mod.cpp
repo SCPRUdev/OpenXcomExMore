@@ -3209,6 +3209,10 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	reader.tryRead("psiUnlockResearch", _psiUnlockResearch);
 	reader.tryRead("fakeUnderwaterBaseUnlockResearch", _fakeUnderwaterBaseUnlockResearch);
 	reader.tryRead("newBaseUnlockResearch", _newBaseUnlockResearch);
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+	reader.tryRead("purchaseUnlockResearch", _purchaseUnlockResearch);
+	reader.tryRead("sellUnlockResearch", _sellUnlockResearch);
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 	reader.tryRead("hireScientistsUnlockResearch", _hireScientistsUnlockResearch);
 	reader.tryRead("hireEngineersUnlockResearch", _hireEngineersUnlockResearch);
 	loadBaseFunction("mod", _hireScientistsRequiresBaseFunc, reader["hireScientistsRequiresBaseFunc"]);

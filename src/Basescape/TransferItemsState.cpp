@@ -187,6 +187,14 @@ TransferItemsState::TransferItemsState(Base *baseFrom, Base *baseTo, DebriefingS
 	{
 		RuleItem *rule = _game->getMod()->getItem(itemType, true);
 		int qty = _baseFrom->getStorageItems()->getItem(rule);
+
+		// Osobist 14/01/2025 addition start, new atributes preventing transfer and selling items
+		if (!rule->getCanBeTransferredNormally())
+		{
+			qty = 0;
+		}
+		// Osobist 14/01/2025 addition end, new atributes preventing transfer and selling items
+
 		if (_debriefingState != 0)
 		{
 			qty = _debriefingState->getRecoveredItemCount(rule);

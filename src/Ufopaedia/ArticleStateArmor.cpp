@@ -139,9 +139,9 @@ namespace OpenXcom
 
 		// Add armor values
 		addStat("STR_FRONT_ARMOR", armor->getFrontArmor());
+		addStat("STR_REAR_ARMOR", armor->getRearArmor()); // Osobist 14/01/2025 addition, armor strings repose
 		addStat("STR_LEFT_ARMOR", armor->getLeftSideArmor());
 		addStat("STR_RIGHT_ARMOR", armor->getRightSideArmor());
-		addStat("STR_REAR_ARMOR", armor->getRearArmor());
 		addStat("STR_UNDER_ARMOR", armor->getUnderArmor());
 
 		_lstInfo->addRow(0);

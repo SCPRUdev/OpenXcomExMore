@@ -235,8 +235,32 @@ void BasescapeState::init()
 		if (!newBasesUnlocked)
 		{
 			_btnNewBase->setVisible(false);
+			// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+			_txtFunds->setVisible(false);
+			// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
+
 		}
 	}
+
+	// Osobist 14/01/2025 addition start, hiding balance and buttons behind research
+	if (!_game->getMod()->getPurchaseUnlockResearch().empty())
+	{
+		bool purchaseUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getPurchaseUnlockResearch(), true);
+		if (!purchaseUnlocked)
+		{
+			_btnPurchase->setVisible(false);
+		}
+	}
+
+	if (!_game->getMod()->getSellUnlockResearch().empty())
+	{
+		bool sellUnlocked = _game->getSavedGame()->isResearched(_game->getMod()->getSellUnlockResearch(), true);
+		if (!sellUnlocked)
+		{
+			_btnSell->setVisible(false);
+		}
+	}
+	// Osobist 14/01/2025 addition end, hiding balance and buttons behind research
 }
 
 /**

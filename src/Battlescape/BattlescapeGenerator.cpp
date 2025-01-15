@@ -2222,12 +2222,12 @@ int BattlescapeGenerator::loadMAP(MapBlock *mapblock, int xoff, int yoff, int zo
 					index = RNG::generate(0, rngItems.itemList.size() - 1);
 					rule = _game->getMod()->getItem(rngItems.itemList[index], true);
 				}
-				// Osobist 15/01/2025 disable start, temporarly disabled till clarification from Meridian
-				//if (rule->getBattleType() == BT_CORPSE)
-				//{
-				//	throw Exception("Placing corpse items (battleType: 11) on the map is not allowed. Item: " + rule->getType() + ", map block: " + mapblock->getName());
-				//}
-				// Osobist 15/01/2025 disable end, temporarly disabled till clarification from Meridian
+
+				if (rule->getBattleType() == BT_CORPSE)
+				{
+					throw Exception("Placing corpse items (battleType: 11) on the map is not allowed. Item: " + rule->getType() + ", map block: " + mapblock->getName());
+				}
+
 				if (rngItems.position.x >= mapblock->getSizeX() || rngItems.position.y >= mapblock->getSizeY() || rngItems.position.z >= mapblock->getSizeZ())
 				{
 					ss << "Random item " << rule->getType() << " is outside of map block " << mapblock->getName() << ", position: [";

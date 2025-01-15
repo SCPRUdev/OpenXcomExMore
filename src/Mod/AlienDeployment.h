@@ -103,6 +103,7 @@ private:
 	std::vector<DeploymentData> _data;
 	std::vector<ReinforcementsData> _reinforcements;
 	int _width, _length, _height, _civilians;
+	bool _ignoreLivingCivilians; // Osobist 15/01/2025 addition, Option to ignore living civilians from 8.0.3 (by Meridian)
 	bool _markCiviliansAsVIP;
 	int _civilianSpawnNodeRank;
 	std::map<std::string, int> _civiliansByType;
@@ -190,6 +191,10 @@ public:
 	void getDimensions(int *width, int *length, int *height) const;
 	/// Gets civilians.
 	int getCivilians() const;
+	// Osobist 15/01/2025 addition start, Option to ignore living civilians from 8.0.3 (by Meridian)
+	/// Should living civilians be ignored for scoring, commendations, etc.?
+	bool getIgnoreLivingCivilians() const { return _ignoreLivingCivilians; }
+	// Osobist 15/01/2025 addition end, Option to ignore living civilians from 8.0.3 (by Meridian)
 	/// Gets the civilian spawn node rank.
 	bool getMarkCiviliansAsVIP() const { return _markCiviliansAsVIP; }
 	/// Gets the civilian spawn node rank.

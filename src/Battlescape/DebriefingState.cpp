@@ -1484,6 +1484,13 @@ void DebriefingState::prepareDebriefing()
 
 	// time to care for units.
 	bool psiStrengthEval = (Options::psiStrengthEval && save->isResearched(_game->getMod()->getPsiRequirements()));
+	// Osobist 15/01/2025 addition start, Option to ignore living civilians from 8.0.3 (by Meridian)
+	bool ignoreLivingCivilians = false;
+	if (ruleDeploy)
+	{
+		ignoreLivingCivilians = ruleDeploy->getIgnoreLivingCivilians();
+	}
+	// Osobist 15/01/2025 addition end, Option to ignore living civilians from 8.0.3 (by Meridian)
 	for (auto* bunit : *battle->getUnits())
 	{
 		UnitStatus status = bunit->getStatus();
@@ -1681,7 +1688,7 @@ void DebriefingState::prepareDebriefing()
 					}
 				}
 			}
-			else if (oldFaction == FACTION_NEUTRAL)
+			else if (oldFaction == FACTION_NEUTRAL && !ignoreLivingCivilians) // Osobist 15/01/2025 addition, Option to ignore living civilians from 8.0.3 (by Meridian)
 			{
 				// if mission fails, all civilians die
 				if ((aborted && !success) || playersSurvived == 0)

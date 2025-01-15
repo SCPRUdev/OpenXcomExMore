@@ -2222,11 +2222,12 @@ int BattlescapeGenerator::loadMAP(MapBlock *mapblock, int xoff, int yoff, int zo
 					index = RNG::generate(0, rngItems.itemList.size() - 1);
 					rule = _game->getMod()->getItem(rngItems.itemList[index], true);
 				}
-
-				if (rule->getBattleType() == BT_CORPSE)
-				{
-					throw Exception("Placing corpse items (battleType: 11) on the map is not allowed. Item: " + rule->getType() + ", map block: " + mapblock->getName());
-				}
+				// Osobist 15/01/2025 disable start, temporarly disabled till clarification from Meridian
+				//if (rule->getBattleType() == BT_CORPSE)
+				//{
+				//	throw Exception("Placing corpse items (battleType: 11) on the map is not allowed. Item: " + rule->getType() + ", map block: " + mapblock->getName());
+				//}
+				// Osobist 15/01/2025 disable end, temporarly disabled till clarification from Meridian
 				if (rngItems.position.x >= mapblock->getSizeX() || rngItems.position.y >= mapblock->getSizeY() || rngItems.position.z >= mapblock->getSizeZ())
 				{
 					ss << "Random item " << rule->getType() << " is outside of map block " << mapblock->getName() << ", position: [";
@@ -2234,7 +2235,13 @@ int BattlescapeGenerator::loadMAP(MapBlock *mapblock, int xoff, int yoff, int zo
 					ss << mapblock->getSizeX() << "," << mapblock->getSizeY() << "," << mapblock->getSizeZ() << "]";
 					throw Exception(ss.str());
 				}
-				_save->createItemForTile(rule, _save->getTile(rngItems.position + Position(xoff, yoff, zoff)));
+				// Osobist 15/01/2025 addition start, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
+				BattleItem* newRandItem = _save->createItemForTile(rule, _save->getTile(rngItems.position + Position(xoff, yoff, zoff)));
+				if (rule->getFuseTimerType() != BFT_NONE && rngItems.fuseTimerMin > -1 && rngItems.fuseTimerMax > -1 && rngItems.fuseTimerMin <= rngItems.fuseTimerMax)
+				{
+					newRandItem->setFuseTimer(RNG::generate(rngItems.fuseTimerMin, rngItems.fuseTimerMax));
+				}
+				// Osobist 15/01/2025 addition end, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
 			}
 		}
 	}

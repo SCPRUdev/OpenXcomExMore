@@ -155,6 +155,10 @@ bool read(ryml::ConstNodeRef const& n, RandomizedItems* val)
 	reader.tryRead("position", val->position);
 	reader.tryRead("amount", val->amount);
 	reader.tryRead("mixed", val->mixed);
+	// Osobist 15/01/2025 addition start, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
+	reader.tryRead("fuseTimerMin", val->fuseTimerMin);
+	reader.tryRead("fuseTimerMax", val->fuseTimerMax);
+	// Osobist 15/01/2025 addition end, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
 	reader.tryRead("itemList", val->itemList);
 	return true;
 }

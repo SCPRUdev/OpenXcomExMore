@@ -32,9 +32,13 @@ struct RandomizedItems
 {
 	Position position;
 	int amount;
+	// Osobist 15/01/2025 addition start, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
+	int fuseTimerMin;
+	int fuseTimerMax;
+	// Osobist 15/01/2025 addition end, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
 	bool mixed;
 	std::vector<std::string> itemList;
-	RandomizedItems() : amount(1), mixed(false) { /*Empty by Design*/ };
+	RandomizedItems() : amount(1), fuseTimerMin(-1), fuseTimerMax(-1), mixed(false){/*Empty by Design*/}; // Osobist 15/01/2025 addition, fuseTimerMin/Max for randomizedItems from 8.0.3 (by Meridian)
 };
 
 struct ExtendedItems

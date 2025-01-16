@@ -112,6 +112,14 @@ InventoryState::InventoryState(bool tu, BattlescapeState *parent, Base *base, bo
 	_txtName = new TextEdit(this, 210, 17, 28, 6);
 	_txtTus = new Text(40, 9, 245, 24);
 	_txtWeight = new Text(70, 9, 245, 24);
+	// 16.01.2025 trauma indicators draft start
+	_txtTraumaHead = new Text(10, 9, 65, 45);
+	_txtTraumaTorso = new Text(10, 9, 75, 75);
+	_txtTraumaLeftArm = new Text(10, 9, 111, 78);
+	_txtTraumaRightArm = new Text(10, 9, 45, 78);
+	_txtTraumaLeftLeg = new Text(10, 9, 50, 125);
+	_txtTraumaRightLeg = new Text(10, 9, 105, 125);
+	// 16.01.2025 trauma indicators draft end
 	_txtStatLine1 = new Text(70, 9, 245, 32);
 	_txtStatLine2 = new Text(70, 9, 245, 40);
 	_txtStatLine3 = new Text(70, 9, 245, 48);
@@ -158,6 +166,14 @@ InventoryState::InventoryState(bool tu, BattlescapeState *parent, Base *base, bo
 	add(_txtStatLine2, "textStatLine2", "inventory", _bg);
 	add(_txtStatLine3, "textStatLine3", "inventory", _bg);
 	add(_txtStatLine4, "textStatLine4", "inventory", _bg);
+	//16.01.2025 trauma indicators draft start
+	add(_txtTraumaHead, "textTraumaHead", "inventory", _bg);
+	add(_txtTraumaTorso, "textTraumaTorso", "inventory", _bg);
+	add(_txtTraumaLeftArm, "textTraumaLeftArm", "inventory", _bg);
+	add(_txtTraumaRightArm, "textTraumaRightArm", "inventory", _bg);
+	add(_txtTraumaLeftLeg, "textTraumaLeftLeg", "inventory", _bg);
+	add(_txtTraumaRightLeg, "textTraumaRightLeg", "inventory", _bg);
+	// 16.01.2025 trauma indicators draft end
 	add(_txtItem, "textItem", "inventory", _bg);
 	add(_txtAmmo, "textAmmo", "inventory", _bg);
 	add(_btnOk, "buttonOK", "inventory", _bg);
